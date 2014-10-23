@@ -15,4 +15,25 @@ class User < ActiveRecord::Base
     primary_key: :id  
   )
   
+  def completed
+    query = <<-SQL
+    SELECT polls.*
+    FROM polls
+    LEFT OUTER JOIN questions
+    ON polls.id = questions.poll_id
+    LEFT OUTER JOIN answer_choices
+    ON questions.id = answer_choices.question_id
+    LEFT OUTER JOIN (
+      SELECT responses.*
+      FROM responses
+      WHERE responses.user_id = ?
+    ) AS user_responses
+    ON user_responses.answer_choice_id = answer_choices.id
+    GROUP BY polls.id
+    HAVING COUNT(DISTINCT questions.id) = COUNT(DISTINCT user_responses.id)
+    SQL
+    Poll.find_by_sql([query, self.id])
+
+  end
+  
 end
