@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id         :integer          not null, primary key
+#  text       :string(255)
+#  poll_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Question < ActiveRecord::Base
   validates :text, :poll_id, presence: true
   

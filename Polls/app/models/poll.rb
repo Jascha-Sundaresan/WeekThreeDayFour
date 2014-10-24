@@ -1,5 +1,16 @@
+# == Schema Information
+#
+# Table name: polls
+#
+#  id         :integer          not null, primary key
+#  title      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  author_id  :integer
+#
+
 class Poll < ActiveRecord::Base
-  validates :title, :author, presence: true
+  validates :title, :author_id, presence: true
   validates :title, uniqueness: true
   
   belongs_to(

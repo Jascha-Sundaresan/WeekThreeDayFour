@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: responses
+#
+#  id               :integer          not null, primary key
+#  user_id          :integer
+#  answer_choice_id :integer
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+
 class Response < ActiveRecord::Base
   validates :user_id, :answer_choice_id, presence: true
   validate :respondent_has_not_already_answered_question
@@ -40,9 +51,14 @@ class Response < ActiveRecord::Base
     end
   end
   
+  def this_is_your_poll?
+    Poll.joins(questions: :answer_choices)
+          .exists?(['author_id = ? AND answer_choices.id = ?', 
+          user_id, answer_choice_id])  
+  end
   
   def author_cant_respond_to_own_poll
-    if question.author.id == user_id
+    if this_is_your_poll? #question.author.id == user_id
       errors[:poll_owner] << "Author can't respond to own poll"
     end
   end

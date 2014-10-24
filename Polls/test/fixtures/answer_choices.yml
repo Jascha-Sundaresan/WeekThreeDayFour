@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: answer_choices
+#
+#  id          :integer          not null, primary key
+#  text        :string(255)
+#  question_id :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
